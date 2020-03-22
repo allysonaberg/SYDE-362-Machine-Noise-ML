@@ -42,12 +42,9 @@ int decay4 = 200;
 int decay5 = 200;
 
 //DOT DATA
-String lastNumber = "";
 ArrayList<String> numbers = new ArrayList<String>();
 HashMap<Float, Integer> collectedData = new HashMap<Float, Integer>();
 
-boolean didChange = false;
-boolean shouldAnimate = false;
 float highlightColor = 255;
 float backlightColor = 255;
 
@@ -83,7 +80,8 @@ float[] numbers = {1,2,3,4,5,6,7,8,9,10};
 // uses the moving averages to determine which block to light up
 void draw()
 {
-  //persistent setup
+  // ******** PERSISTENT SETUP ******* //
+  
     background(255);
     fill(0,0,0);
     textSize(20);
@@ -94,37 +92,39 @@ void draw()
     text("Failure 4", 10, 248);
     
     
-  if((average1 > highLim) && (average2 < lowLim) && (average3 < lowLim)  && (average4 < lowLim) && (average5 < lowLim)) {
-    decay1 = decayStart;
-    decay2 -= decayAmount;
-    decay3 -= decayAmount;
-    decay4 -= decayAmount;
-    decay5 -= decayAmount;
-  } else if((average1 < lowLim) && (average2 > highLim) && (average3 < lowLim) && (average4 < lowLim) && (average5 < lowLim)){
-    decay1 -= decayAmount;
-    decay2 = decayStart;
-    decay3 -= decayAmount;
-    decay4 -= decayAmount;
-    decay5 -= decayAmount;
-  } else if((average1 < lowLim) && (average2 < lowLim) && (average3 > highLim) && (average4 < lowLim) && (average5 < lowLim)){
-    decay1 -= decayAmount;
-    decay2 -= decayAmount;
-    decay3 = decayStart;
-    decay4 -= decayAmount;
-    decay5 -= decayAmount;
-  } else if((average1 < lowLim) && (average2 < lowLim) && (average3 < lowLim) && (average4 > highLim) && (average5 < lowLim)){
-    decay1 -= decayAmount;
-    decay2 -= decayAmount;
-    decay3 -= decayAmount; 
-    decay4 = decayStart;
-    decay5 -= decayAmount;
-  } else if((average1 < lowLim) && (average2 < lowLim) && (average3 < lowLim) && (average4 < lowLim) && (average5 > highLim)){
-    decay1 -= decayAmount;
-    decay2 -= decayAmount;
-    decay3 -= decayAmount; 
-    decay4 -= decayAmount;
-    decay5 = decayStart;
-  }
+    // ******* WORKING AVERAGE CALCULATIONS ******* //
+    
+    if((average1 > highLim) && (average2 < lowLim) && (average3 < lowLim)  && (average4 < lowLim) && (average5 < lowLim)) {
+      decay1 = decayStart;
+      decay2 -= decayAmount;
+      decay3 -= decayAmount;
+      decay4 -= decayAmount;
+      decay5 -= decayAmount;
+    } else if((average1 < lowLim) && (average2 > highLim) && (average3 < lowLim) && (average4 < lowLim) && (average5 < lowLim)){
+      decay1 -= decayAmount;
+      decay2 = decayStart;
+      decay3 -= decayAmount;
+      decay4 -= decayAmount;
+      decay5 -= decayAmount;
+    } else if((average1 < lowLim) && (average2 < lowLim) && (average3 > highLim) && (average4 < lowLim) && (average5 < lowLim)){
+      decay1 -= decayAmount;
+      decay2 -= decayAmount;
+      decay3 = decayStart;
+      decay4 -= decayAmount;
+      decay5 -= decayAmount;
+    } else if((average1 < lowLim) && (average2 < lowLim) && (average3 < lowLim) && (average4 > highLim) && (average5 < lowLim)){
+      decay1 -= decayAmount;
+      decay2 -= decayAmount;
+      decay3 -= decayAmount; 
+      decay4 = decayStart;
+      decay5 -= decayAmount;
+    } else if((average1 < lowLim) && (average2 < lowLim) && (average3 < lowLim) && (average4 < lowLim) && (average5 > highLim)){
+      decay1 -= decayAmount;
+      decay2 -= decayAmount;
+      decay3 -= decayAmount; 
+      decay4 -= decayAmount;
+      decay5 = decayStart;
+    }
   
     if(decay1 < 0){decay1 = 0;}
     if(decay2 < 0){decay2 = 0;}
@@ -132,35 +132,29 @@ void draw()
     if(decay4 < 0){decay4 = 0;}
     if(decay5 < 0){decay5 = 0;}
     
+    
+    // ******* DRAW ELLIPSE *******//
+    
     if (decay1 != 0 && (decay2 == 0) && (decay3 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 1")) {
         numbers.add("sound 1");
-        didChange = true;
         Float time = millis()/1000.0;
         collectedData.put(time,1);
         totalType1 = totalType1 + 1;
-      } else {
-        didChange = false;
       }
     } else if (decay2 != 0 && (decay1 == 0) && (decay3 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 2")) {
         numbers.add("sound 2");
-        didChange = true;
         Float time = millis()/1000.0;
         collectedData.put(time,2);
         totalType2 = totalType2 + 1;
-      } else {
-        didChange = false;
       }
     } else if (decay3 != 0 && (decay1 == 0) && (decay2 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 3")) {
         numbers.add("sound 3");
-        didChange = true;
         Float time = millis()/1000.0;
         collectedData.put(time,3);
         totalType3 = totalType3 + 1;
-      } else {
-        didChange = false;
       }
     } else if (decay4 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 4")) {
@@ -168,19 +162,12 @@ void draw()
         Float time = millis()/1000.0;
         collectedData.put(time,4);
         totalType4 = totalType4 + 1;
-        didChange = true;
-      } else {
-        didChange = false;
       }
     } else if (decay5 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 == 0) && (decay4 == 0)) {
       //ignore, this indicates white noise
       numbers.add("sound 5");
     }
     
-    
-    //IDEA: hold an array of past data, will keep updating. we will determine a "new" item when it no longer
-    //matches the old item (there will need to be "white noise" between identical items to distinguish)
-    //println(collectedData);
     for (Iterator<Entry<Float,Integer>> iter = collectedData.entrySet().iterator(); iter.hasNext();)
     {
       Entry<Float,Integer> timeStamp = iter.next();
@@ -200,9 +187,10 @@ void draw()
         ellipse(timeStamp.getKey()*10 + 100, value*60, 8, 8);
       }
     }  
-    println("");
         
-    //PI CHART
+        
+    // ******* PI CHART *******//
+    
     float totalNums = totalType1 + totalType2 + totalType3 + totalType4;
 
       if (totalNums > 0) {
@@ -215,7 +203,6 @@ void draw()
       pieChart(200,angles);
     }
     
-      
 }
 
 void pieChart(float diameter, HashMap<Integer,Float> data) {
@@ -262,7 +249,6 @@ void oscEvent(OscMessage theOscMessage) {
  }
 }
 
-// Use the next value and calculate the
 
 // moving average1
 public void nextValue1(float value){
