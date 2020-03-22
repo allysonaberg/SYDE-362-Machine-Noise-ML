@@ -8,7 +8,7 @@ import java.util.Map.Entry;
 OscP5 oscP5;
 NetAddress dest;
 
-// These are needed for the moving average calculation
+//MOVING AVERAGE
 float[] data1 = new float[2];
 float total1 = 0, average1 = 0;
 int m1 = 0, n1 = 0;
@@ -29,6 +29,11 @@ float[] data5 = new float[2];
 float total5 = 0, average5 = 0;
 int m5 = 0, n5 = 0;
 
+int decayStart = 200;
+int decayAmount = 10;
+
+float lowLim = 0.2;
+float highLim = 0.8;
 
 int decay1 = 200;
 int decay2 = 200;
@@ -36,22 +41,18 @@ int decay3 = 200;
 int decay4 = 200;
 int decay5 = 200;
 
+//DOT DATA
 String lastNumber = "";
 ArrayList<String> numbers = new ArrayList<String>();
-HashMap<Integer, Float> angles = new HashMap<Integer, Float>();
-
-int decayStart = 200;
-int decayAmount = 10;
-
-float lowLim = 0.2;
-float highLim = 0.8;
+HashMap<Float, Integer> collectedData = new HashMap<Float, Integer>();
 
 boolean didChange = false;
 boolean shouldAnimate = false;
 float highlightColor = 255;
 float backlightColor = 255;
 
-HashMap<Float, Integer> collectedData = new HashMap<Float, Integer>();
+//PI CHART DATA
+HashMap<Integer, Float> angles = new HashMap<Integer, Float>();
 
 float totalType1 = 0;
 float totalType2 = 0;
@@ -61,11 +62,8 @@ float totalType5 = 0;
 
 void setup()
 {
-  numbers.add("");
-  numbers.add("");
-  numbers.add("");
-
   size(1000, 300);
+  
   //Initialize OSC communication
   oscP5 = new OscP5(this,12000); //listen for OSC messages on port 12000 (Wekinator default)
   dest = new NetAddress("127.0.0.1",6448); //send messages back to Wekinator on port 6448, localhost (this machine) (default)
@@ -85,6 +83,17 @@ float[] numbers = {1,2,3,4,5,6,7,8,9,10};
 // uses the moving averages to determine which block to light up
 void draw()
 {
+  //persistent setup
+    background(255);
+    fill(0,0,0);
+    textSize(20);
+    
+    text("Failure 1", 10, 68);
+    text("Failure 2", 10, 128);
+    text("Failure 3", 10, 188);
+    text("Failure 4", 10, 248);
+    
+    
   if((average1 > highLim) && (average2 < lowLim) && (average3 < lowLim)  && (average4 < lowLim) && (average5 < lowLim)) {
     decay1 = decayStart;
     decay2 -= decayAmount;
@@ -117,25 +126,14 @@ void draw()
     decay5 = decayStart;
   }
   
-  
-    background(255);
-    
-    fill(0,0,0);
-    textSize(20);
-    text("Failure 1", 10, 68);
-    text("Failure 2", 10, 128);
-    text("Failure 3", 10, 188);
-    text("Failure 4", 10, 248);
-    
     if(decay1 < 0){decay1 = 0;}
     if(decay2 < 0){decay2 = 0;}
     if(decay3 < 0){decay3 = 0;}
     if(decay4 < 0){decay4 = 0;}
     if(decay5 < 0){decay5 = 0;}
     
-    
     if (decay1 != 0 && (decay2 == 0) && (decay3 == 0) && (decay4 ==0)) {
-      if (numbers.get(numbers.size() - 1) != "sound 1") {
+      if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 1")) {
         numbers.add("sound 1");
         didChange = true;
         Float time = millis()/1000.0;
@@ -145,7 +143,7 @@ void draw()
         didChange = false;
       }
     } else if (decay2 != 0 && (decay1 == 0) && (decay3 == 0) && (decay4 ==0)) {
-      if (numbers.get(numbers.size() - 1) != "sound 2") {
+      if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 2")) {
         numbers.add("sound 2");
         didChange = true;
         Float time = millis()/1000.0;
@@ -155,7 +153,7 @@ void draw()
         didChange = false;
       }
     } else if (decay3 != 0 && (decay1 == 0) && (decay2 == 0) && (decay4 ==0)) {
-      if (numbers.get(numbers.size() - 1) != "sound 3") {
+      if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 3")) {
         numbers.add("sound 3");
         didChange = true;
         Float time = millis()/1000.0;
@@ -165,7 +163,7 @@ void draw()
         didChange = false;
       }
     } else if (decay4 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 ==0)) {
-      if (numbers.get(numbers.size() - 1) != "sound 4") {
+      if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 4")) {
         numbers.add("sound 4");
         Float time = millis()/1000.0;
         collectedData.put(time,4);
@@ -179,6 +177,7 @@ void draw()
       numbers.add("sound 5");
     }
     
+    
     //IDEA: hold an array of past data, will keep updating. we will determine a "new" item when it no longer
     //matches the old item (there will need to be "white noise" between identical items to distinguish)
     //println(collectedData);
@@ -189,22 +188,21 @@ void draw()
       noStroke();
       if (value == 1) {
         fill(255,0,0);
-        ellipse(timeStamp.getKey()*10 + 100, value*60, 10, 10);
+        ellipse(timeStamp.getKey()*10 + 100, value*60, 8, 8);
       } else if (value == 2) {
         fill(0,255,0);
-        ellipse(timeStamp.getKey()*10 + 100, value*60, 10, 10);
+        ellipse(timeStamp.getKey()*10 + 100, value*60, 8, 8);
       } else if (value == 3) {
         fill(0,0,255);
-        ellipse(timeStamp.getKey()*10 + 100, value*60, 10, 10);
+        ellipse(timeStamp.getKey()*10 + 100, value*60, 8, 8);
       } else if (value == 4) {
         fill(255,0,255);
-        ellipse(timeStamp.getKey()*10 + 100, value*60, 10, 10);
+        ellipse(timeStamp.getKey()*10 + 100, value*60, 8, 8);
       }
     }  
     println("");
         
-    PI CHART
-
+    //PI CHART
     float totalNums = totalType1 + totalType2 + totalType3 + totalType4;
 
       if (totalNums > 0) {
