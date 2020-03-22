@@ -60,7 +60,7 @@ float totalType5 = 0;
 
 void setup()
 {
-  size(1000, 300);
+  size(900, 550);
   
   //Initialize OSC communication
   oscP5 = new OscP5(this,12000); //listen for OSC messages on port 12000 (Wekinator default)
@@ -85,7 +85,7 @@ void draw()
   
     background(255);
     fill(0,0,0);
-    textSize(20);
+    textSize(18);
     
     text("Failure 1", 10, 68);
     text("Failure 2", 10, 128);
@@ -208,7 +208,27 @@ void draw()
     // ******* PI CHART *******//
     
     float totalNums = totalType1 + totalType2 + totalType3 + totalType4;
-
+      textSize(15);
+      fill(169,169,169);
+      text("Failure Type", width/3 + 140, height/1.4 - 30);
+      text("Count", width/3 + 280, height/1.4 - 30);
+      fill(255,0,0);
+      text("Failure 1", width/3 + 150, height/1.4);
+      fill(0,0,0);
+      text(int(totalType1), width/3 + 300, height/1.4);
+      fill(0,255,0);
+      text("Failure 2", width/3 + 150, height/1.4 + 30);
+      fill(0,0,0);
+      text(int(totalType2), width/3 + 300, height/1.4 + 30);
+      fill(0,0,255);
+      text("Failure 3", width/3 + 150, height/1.4 + 60);
+      fill(0,0,0);
+      text(int(totalType3), width/3 + 300, height/1.4 + 60);
+      fill(255,0,255);
+      text("Failure 4", width/3 + 150, height/1.4 + 90);
+      fill(0,0,0);
+      text(int(totalType4), width/3 + 300, height/1.4 + 90);
+      
       if (totalNums > 0) {
       angles.clear();
       angles.put(1, (totalType1/totalNums)*360);
@@ -216,12 +236,12 @@ void draw()
       angles.put(3, (totalType3/totalNums)*360);
       angles.put(4, (totalType4/totalNums)*360);
     
-      pieChart(200,angles);
+      pieChart(200,angles, int(totalNums));
     }
     
 }
 
-void pieChart(float diameter, HashMap<Integer,Float> data) {
+void pieChart(float diameter, HashMap<Integer,Float> data, int total) {
     float lastAngle = 0;
     for (Iterator<Entry<Integer,Float>> iter = data.entrySet().iterator(); iter.hasNext();)
     {
@@ -237,8 +257,17 @@ void pieChart(float diameter, HashMap<Integer,Float> data) {
       } else if (error == 4) {
         fill(255,0,255);
       }
-      arc(width/1.2, height/2, diameter, diameter, lastAngle, lastAngle+radians(errorType.getValue()));
+      arc(width/3, height/1.35, diameter, diameter, lastAngle, lastAngle+radians(errorType.getValue()));
       lastAngle += radians(errorType.getValue());
+      
+      fill(255,255,255);
+      ellipse(width/3, height/1.35,90,90);
+      fill(0,0,0);
+      textSize(12);
+      text("total failures", width/3 - 34, height/1.35 - 10);
+      textSize(20);
+      text(total, width/3 - 9, height/1.35 + 18);
+
     }
 }
 
