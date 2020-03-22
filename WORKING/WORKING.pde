@@ -45,6 +45,7 @@ int decay5 = 200;
 ArrayList<String> numbers = new ArrayList<String>();
 HashMap<Float, Integer> collectedData = new HashMap<Float, Integer>();
 
+float startTime = 0.0;
 float highlightColor = 255;
 float backlightColor = 255;
 
@@ -134,32 +135,47 @@ void draw()
     
     
     // ******* DRAW ELLIPSE *******//
-    
     if (decay1 != 0 && (decay2 == 0) && (decay3 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 1")) {
+        if (collectedData.size() == 0) {
+          print("SETTING START TIME");
+          startTime = millis()/1000.0;
+        }
         numbers.add("sound 1");
-        Float time = millis()/1000.0;
+        Float time = millis()/1000.0 - startTime;
         collectedData.put(time,1);
         totalType1 = totalType1 + 1;
       }
     } else if (decay2 != 0 && (decay1 == 0) && (decay3 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 2")) {
+        if (collectedData.size() == 0) {
+          print("SETTING START TIME");
+          startTime = millis()/1000.0;
+        }
         numbers.add("sound 2");
-        Float time = millis()/1000.0;
+        Float time = millis()/1000.0 - startTime;
         collectedData.put(time,2);
         totalType2 = totalType2 + 1;
       }
     } else if (decay3 != 0 && (decay1 == 0) && (decay2 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 3")) {
+        if (collectedData.size() == 0) {
+          print("SETTING START TIME");
+          startTime = millis()/1000.0;
+        }
         numbers.add("sound 3");
-        Float time = millis()/1000.0;
+        Float time = millis()/1000.0 - startTime;
         collectedData.put(time,3);
         totalType3 = totalType3 + 1;
       }
     } else if (decay4 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 4")) {
+        if (collectedData.size() == 0) {
+          print("SETTING START TIME");
+          startTime = millis()/1000.0;
+        }
         numbers.add("sound 4");
-        Float time = millis()/1000.0;
+        Float time = millis()/1000.0 - startTime;
         collectedData.put(time,4);
         totalType4 = totalType4 + 1;
       }
