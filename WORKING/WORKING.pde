@@ -44,6 +44,7 @@ int decay5 = 200;
 //DOT DATA
 ArrayList<String> numbers = new ArrayList<String>();
 HashMap<Float, Integer> collectedData = new HashMap<Float, Integer>();
+HashMap<Float, Float> timeStampData = new HashMap<Float, Float>();
 
 float startTime = 0.0;
 float highlightColor = 255;
@@ -87,10 +88,12 @@ void draw()
     fill(0,0,0);
     textSize(18);
     
-    text("Failure 1", 10, 68);
-    text("Failure 2", 10, 128);
-    text("Failure 3", 10, 188);
-    text("Failure 4", 10, 248);
+    text("Failure 1", 20, 68);
+    text("Failure 2", 20, 128);
+    text("Failure 3", 20, 188);
+    text("Failure 4", 20, 248);
+    
+    update();
     
     
     // ******* WORKING AVERAGE CALCULATIONS ******* //
@@ -191,16 +194,20 @@ void draw()
       noStroke();
       if (value == 1) {
         fill(255,0,0);
-        ellipse(timeStamp.getKey()*10 + 100, value*60, 8, 8);
+        ellipse(timeStamp.getKey()*30 + 150, value*60, 12, 12);
+        timeStampData.put(timeStamp.getKey()*30 + 150, value*60);
       } else if (value == 2) {
         fill(0,255,0);
-        ellipse(timeStamp.getKey()*10 + 100, value*60, 8, 8);
+        ellipse(timeStamp.getKey()*30 + 150, value*60, 12, 12);
+        timeStampData.put(timeStamp.getKey()*30 + 150, value*60);
       } else if (value == 3) {
         fill(0,0,255);
-        ellipse(timeStamp.getKey()*10 + 100, value*60, 8, 8);
+        ellipse(timeStamp.getKey()*30 + 150, value*60, 12, 12);
+        timeStampData.put(timeStamp.getKey()*30 + 150, value*60);
       } else if (value == 4) {
         fill(255,0,255);
-        ellipse(timeStamp.getKey()*10 + 100, value*60, 8, 8);
+        ellipse(timeStamp.getKey()*30 + 150, value*60, 12, 12);
+        timeStampData.put(timeStamp.getKey()*30 + 150, value*60);
       }
     }  
         
@@ -212,6 +219,8 @@ void draw()
       fill(128,128,128);
       text("Failure Type", width/3 + 140, height/1.4 - 30);
       text("Count", width/3 + 290, height/1.4 - 30);
+      noStroke();
+      rect(width/3 + 235, height/1.4 - 20, 210, 1);
       fill(255,0,0);
       text("Failure 1", width/3 + 150, height/1.4);
       fill(0,0,0);
@@ -271,6 +280,36 @@ void pieChart(float diameter, HashMap<Integer,Float> data, int total) {
     }
 }
 
+void update() {
+  //for position in positions
+
+print(timeStampData);
+  for (Iterator<Entry<Float,Float>> iter = timeStampData.entrySet().iterator(); iter.hasNext();)
+  {
+    Entry<Float,Float> vals = iter.next();
+    float positionX = vals.getKey();
+    float positionY = vals.getValue();
+    print(mouseX);
+    println(mouseY);
+    print(positionX);
+    println(positionY);
+    if (overPoint(positionX, positionY, 300.0)) {
+      //draw label with time
+      print("HOVER");
+    }
+  }
+}
+
+//SOURCE: https://processing.org/examples/rollover.html
+boolean overPoint(float x, float y, float diameter) {
+  float disX = x - mouseX;
+  float disY = y = mouseY;
+  if (sqrt(sq(disX) + sq(disY)) < diameter / 2) {
+    return true;
+  } else {
+    return false;
+  }  
+}
 //This is called automatically when OSC message is received
 void oscEvent(OscMessage theOscMessage) {
  if (theOscMessage.checkAddrPattern("/wek/outputs")==true) {
