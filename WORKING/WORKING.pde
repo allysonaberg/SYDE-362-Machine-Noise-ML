@@ -209,9 +209,9 @@ void draw()
     
     float totalNums = totalType1 + totalType2 + totalType3 + totalType4;
       textSize(15);
-      fill(169,169,169);
+      fill(128,128,128);
       text("Failure Type", width/3 + 140, height/1.4 - 30);
-      text("Count", width/3 + 280, height/1.4 - 30);
+      text("Count", width/3 + 290, height/1.4 - 30);
       fill(255,0,0);
       text("Failure 1", width/3 + 150, height/1.4);
       fill(0,0,0);
