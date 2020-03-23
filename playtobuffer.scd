@@ -7,7 +7,7 @@ s.boot;
 )
 
 // read a soundfile
-d = Buffer.read(s, "/Users/Ally/ControlTest-30.wav");
+d = Buffer.read(s, "/Users/Ally/ControlTest-10.wav");
 
 (
 // create a network address and assign it to a global variable

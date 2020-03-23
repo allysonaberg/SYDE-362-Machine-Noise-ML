@@ -65,7 +65,7 @@ Table table = new Table();
 
 void setup()
 {
-  size(900, 550);
+  size(1000, 550);
   
   //Initialize OSC communication
   oscP5 = new OscP5(this,12000); //listen for OSC messages on port 12000 (Wekinator default)
@@ -100,6 +100,31 @@ void draw()
     text("Failure 3", 20, 188);
     text("Failure 4", 20, 248);
     
+    
+    rect(520, height/2+1, 800,1);
+    //30*num + 150
+    textSize(12);
+    text("0", 150, height/2 + 20);
+    text("1", 180, height/2 + 20);
+    text("2", 210, height/2 + 20);
+    text("3", 240, height/2 + 20);
+    text("4", 270, height/2 + 20);
+    text("5", 300, height/2 + 20);
+    text("6", 330, height/2 + 20);
+    text("7", 360, height/2 + 20);
+    text("8", 390, height/2 + 20);
+    text("9", 420, height/2 + 20);
+    text("10", 450, height/2 + 20);
+    text("11", 480, height/2 + 20);
+    text("12", 510, height/2 + 20);
+    text("13", 540, height/2 + 20);
+    text("14", 570, height/2 + 20);
+    text("15", 600, height/2 + 20);
+    text("16", 630, height/2 + 20);
+    text("17", 660, height/2 + 20);
+    text("18", 690, height/2 + 20);
+    text("19", 720, height/2 + 20);
+    text("20", 750, height/2 + 20);
     update();
     
     
@@ -304,36 +329,31 @@ void pieChart(float diameter, HashMap<Integer,Float> data, int total) {
       } else if (error == 4) {
         fill(255,0,255);
       }
-      arc(width/3, height/1.35, diameter, diameter, lastAngle, lastAngle+radians(errorType.getValue()));
+      arc(width/3, height/1.32, diameter, diameter, lastAngle, lastAngle+radians(errorType.getValue()));
       lastAngle += radians(errorType.getValue());
       
       fill(255,255,255);
-      ellipse(width/3, height/1.35,90,90);
+      ellipse(width/3, height/1.32,90,90);
       fill(0,0,0);
       textSize(12);
-      text("total failures", width/3 - 34, height/1.35 - 10);
+      text("total failures", width/3 - 36, height/1.32 - 10);
       textSize(20);
-      text(total, width/3 - 9, height/1.35 + 18);
-
+      text(total, width/3 - 9, height/1.32 + 18);
     }
 }
 
 void update() {
   //for position in positions
-
-print(timeStampData);
+  
   for (Iterator<Entry<Float,Float>> iter = timeStampData.entrySet().iterator(); iter.hasNext();)
   {
     Entry<Float,Float> vals = iter.next();
     float positionX = vals.getKey();
     float positionY = vals.getValue();
-    print(mouseX);
-    println(mouseY);
-    print(positionX);
-    println(positionY);
-    if (overPoint(positionX, positionY, 300.0)) {
+    if (overPoint(positionX, positionY, 12.0)) {
       //draw label with time
-      print("HOVER");
+      float time = (positionX - 150.0)/30.0;
+      text(nf(time,0,2) + "s", positionX-15, positionY-15);
     }
   }
 }
@@ -343,14 +363,18 @@ void mousePressed() {
 }
 
 //SOURCE: https://processing.org/examples/rollover.html
-boolean overPoint(float x, float y, float diameter) {
-  float disX = x - mouseX;
-  float disY = y = mouseY;
-  if (sqrt(sq(disX) + sq(disY)) < diameter / 2) {
-    return true;
-  } else {
+boolean overPoint(float x, float y, float bound) {
+  if (x > (mouseX - bound) && (x < mouseX + bound)) {
+    if (y > (mouseY - bound) && y < (mouseY + bound)) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+  else {
     return false;
-  }  
+  }
 }
 //This is called automatically when OSC message is received
 void oscEvent(OscMessage theOscMessage) {
