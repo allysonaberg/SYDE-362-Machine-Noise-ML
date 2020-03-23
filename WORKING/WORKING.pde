@@ -59,6 +59,10 @@ float totalType3 = 0;
 float totalType4 = 0;
 float totalType5 = 0;
 
+
+// CSV
+Table table = new Table();
+
 void setup()
 {
   size(900, 550);
@@ -76,6 +80,9 @@ float[] numbers = {1,2,3,4,5,6,7,8,9,10};
     nextValue4(numbers[i]);
     nextValue5(numbers[i]);
   }  
+  
+  table.addColumn("timestamp");
+  table.addColumn("sound");
 }
 
 
@@ -148,6 +155,10 @@ void draw()
         Float time = millis()/1000.0 - startTime;
         collectedData.put(time,1);
         totalType1 = totalType1 + 1;
+        
+        TableRow newRow = table.addRow();
+        newRow.setFloat("timestamp", time);
+        newRow.setString("sound", "A");
       }
     } else if (decay2 != 0 && (decay1 == 0) && (decay3 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 2")) {
@@ -159,6 +170,10 @@ void draw()
         Float time = millis()/1000.0 - startTime;
         collectedData.put(time,2);
         totalType2 = totalType2 + 1;
+        
+        TableRow newRow = table.addRow();
+        newRow.setFloat("timestamp", time);
+        newRow.setString("sound", "B");
       }
     } else if (decay3 != 0 && (decay1 == 0) && (decay2 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 3")) {
@@ -170,6 +185,10 @@ void draw()
         Float time = millis()/1000.0 - startTime;
         collectedData.put(time,3);
         totalType3 = totalType3 + 1;
+        
+        TableRow newRow = table.addRow();
+        newRow.setFloat("timestamp", time);
+        newRow.setString("sound", "C");
       }
     } else if (decay4 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 4")) {
@@ -181,10 +200,17 @@ void draw()
         Float time = millis()/1000.0 - startTime;
         collectedData.put(time,4);
         totalType4 = totalType4 + 1;
+        
+        TableRow newRow = table.addRow();
+        newRow.setFloat("timestamp", time);
+        newRow.setString("sound", "D");
       }
     } else if (decay5 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 == 0) && (decay4 == 0)) {
       //ignore, this indicates white noise
       numbers.add("sound 5");
+      //TableRow newRow = table.addRow();
+      //newRow.setString("timestamp", "");
+      //newRow.setString("sound", "Delay");
     }
     
     for (Iterator<Entry<Float,Integer>> iter = collectedData.entrySet().iterator(); iter.hasNext();)
@@ -298,6 +324,10 @@ print(timeStampData);
       print("HOVER");
     }
   }
+}
+
+void mousePressed() {
+  saveTable(table, "data/timestamps.csv");
 }
 
 //SOURCE: https://processing.org/examples/rollover.html
