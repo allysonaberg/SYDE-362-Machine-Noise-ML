@@ -50,6 +50,11 @@ float startTime = 0.0;
 float highlightColor = 255;
 float backlightColor = 255;
 
+color pink = color(255,159,247);
+color green = color(0,250,0);
+color yellow = color(252,211,0);
+color blue = color(49,201,251);
+
 //PI CHART DATA
 HashMap<Integer, Float> angles = new HashMap<Integer, Float>();
 
@@ -92,21 +97,25 @@ void draw()
 {
   // ******** PERSISTENT SETUP ******* //
   
-    background(255);
-    fill(0,0,0);
-    textSize(18);
+    background(0);
+    fill(0);
+    textSize(15);
     
+    fill(pink);
     text("Failure 1", 20, 68);
+    fill(green);
     text("Failure 2", 20, 128);
+    fill(yellow);
     text("Failure 3", 20, 188);
+    fill(blue);
     text("Failure 4", 20, 248);
-    fill(169,169,169);
-    rect(800, 400, 150, 50); //coords: x: 725 -> 875 and y: 375 -> 425
-    fill(0,0,0);
-    text("Generate CSV", 738, 405);
+    fill(255);
+    rect(800, 430, 150, 50); 
+    fill(0);
+    text("Generate CSV", 748, 435);
 
     
-    
+    fill(255);
     rect(520, height/2+1, 800,1);
     //30*num + 150
     textSize(12);
@@ -131,6 +140,7 @@ void draw()
     text("18", 690, height/2 + 20);
     text("19", 720, height/2 + 20);
     text("20", 750, height/2 + 20);
+    text("time", 930, height/2 + 6);
     update();
     
     
@@ -262,19 +272,19 @@ void draw()
       float value = timeStamp.getValue();
       noStroke();
       if (value == 1) {
-        fill(255,0,0);
+        fill(pink);
         ellipse(timeStamp.getKey()*30 + 150, value*60, 12, 12);
         timeStampData.put(timeStamp.getKey()*30 + 150, value*60);
       } else if (value == 2) {
-        fill(0,255,0);
+        fill(green);
         ellipse(timeStamp.getKey()*30 + 150, value*60, 12, 12);
         timeStampData.put(timeStamp.getKey()*30 + 150, value*60);
       } else if (value == 3) {
-        fill(0,0,255);
+        fill(yellow);
         ellipse(timeStamp.getKey()*30 + 150, value*60, 12, 12);
         timeStampData.put(timeStamp.getKey()*30 + 150, value*60);
       } else if (value == 4) {
-        fill(255,0,255);
+        fill(blue);
         ellipse(timeStamp.getKey()*30 + 150, value*60, 12, 12);
         timeStampData.put(timeStamp.getKey()*30 + 150, value*60);
       }
@@ -284,28 +294,28 @@ void draw()
     // ******* PI CHART *******//
     
     float totalNums = totalType1 + totalType2 + totalType3 + totalType4;
-      textSize(15);
-      fill(128,128,128);
-      text("Failure Type", width/3 + 140, height/1.4 - 30);
-      text("Count", width/3 + 290, height/1.4 - 30);
+      textSize(13);
+      fill(255);
+      text("Failure Type", width/18 + 120, height/1.4 - 30);
+      text("Count", width/18 + 270, height/1.4 - 30);
       noStroke();
-      rect(width/3 + 235, height/1.4 - 20, 210, 1);
-      fill(255,0,0);
-      text("Failure 1", width/3 + 150, height/1.4);
-      fill(0,0,0);
-      text(int(totalType1), width/3 + 300, height/1.4);
-      fill(0,255,0);
-      text("Failure 2", width/3 + 150, height/1.4 + 30);
-      fill(0,0,0);
-      text(int(totalType2), width/3 + 300, height/1.4 + 30);
-      fill(0,0,255);
-      text("Failure 3", width/3 + 150, height/1.4 + 60);
-      fill(0,0,0);
-      text(int(totalType3), width/3 + 300, height/1.4 + 60);
-      fill(255,0,255);
-      text("Failure 4", width/3 + 150, height/1.4 + 90);
-      fill(0,0,0);
-      text(int(totalType4), width/3 + 300, height/1.4 + 90);
+      rect(width/18 + 225, height/1.4 - 20, 210, 1);
+      fill(pink);
+      text("Failure 1", width/18 + 130, height/1.4);
+      fill(255);
+      text(int(totalType1), width/18 + 280, height/1.4);
+      fill(green);
+      text("Failure 2", width/18 + 130, height/1.4 + 30);
+      fill(255);
+      text(int(totalType2), width/18 + 280, height/1.4 + 30);
+      fill(yellow);
+      text("Failure 3", width/18 + 130, height/1.4 + 60);
+      fill(255);
+      text(int(totalType3), width/18 + 280, height/1.4 + 60);
+      fill(blue);
+      text("Failure 4", width/18 + 130, height/1.4 + 90);
+      fill(255);
+      text(int(totalType4), width/18 + 280, height/1.4 + 90);
       
       if (totalNums > 0) {
       angles.clear();
@@ -327,24 +337,24 @@ void pieChart(float diameter, HashMap<Integer,Float> data, int total) {
       Integer error = errorType.getKey();
       noStroke();
       if (error == 1) {
-        fill(255,0,0);
+        fill(pink);
       } else if (error == 2) {
-        fill(0,255,0);
+        fill(green);
       } else if (error == 3) {
-        fill(0,0,255);
+        fill(yellow);
       } else if (error == 4) {
-        fill(255,0,255);
+        fill(blue);
       }
-      arc(width/3, height/1.32, diameter, diameter, lastAngle, lastAngle+radians(errorType.getValue()));
+      arc(width/3+180, height/1.3, diameter, diameter, lastAngle, lastAngle+radians(errorType.getValue()));
       lastAngle += radians(errorType.getValue());
       
       fill(255,255,255);
-      ellipse(width/3, height/1.32,90,90);
-      fill(0,0,0);
+      ellipse(width/3+180, height/1.3,90,90);
+      fill(0);
       textSize(12);
-      text("total failures", width/3 - 36, height/1.32 - 10);
+      text("total failures", width/3 +145, height/1.32 - 10);
       textSize(20);
-      text(total, width/3 - 9, height/1.32 + 18);
+      text(total, width/3+170, height/1.32 + 18);
     }
 }
 
@@ -365,8 +375,8 @@ void update() {
 }
 
 void mousePressed() {
-  //coords: x: 725 -> 875 and y: 375 -> 425
-  if ((mouseX > 725 && mouseX < 875) && (mouseY > 375 && mouseY < 425)) {
+//coords: x: 725 -> 875 and y: 405 -> 455
+if ((mouseX > 725 && mouseX < 875) && (mouseY > 405 && mouseY < 455)) {
       saveTable(table, "data/timestamps.csv");
   }
 }

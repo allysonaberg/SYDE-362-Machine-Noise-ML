@@ -7,7 +7,7 @@ s.boot;
 )
 
 // read a soundfile
-d = Buffer.read(s, "/Users/Ally/D.wav");
+d = Buffer.read(s, "/Users/Ally/ControlTest-10.wav");
 
 (
 // create a network address and assign it to a global variable
@@ -17,7 +17,7 @@ d = Buffer.read(s, "/Users/Ally/D.wav");
 (
 x = {
     var in, fft, array;
-	in = PlayBuf.ar(1, d, BufRateScale.kr(d), loop: 1);
+	in = PlayBuf.ar(1, d, BufRateScale.kr(d), loop: 0);
     fft = FFT(LocalBuf(1024), in);  // for sampling rates 44100 and 48000
     array = MFCC.kr(fft);
 	Out.kr(0, array); // control bus out
@@ -25,7 +25,7 @@ x = {
 )
 
 (
-c = Bus(\control, 0, 13);
+c = Bus(\control, 0, 30);
 )
 
 // send coefficients
@@ -33,7 +33,7 @@ c = Bus(\control, 0, 13);
 r = {
 
     inf.do {
-		c.getn(13, { |val| ~toWekinator.sendMsg("/wek/inputs",*val[0..]) });
+		c.getn(30, { |val| ~toWekinator.sendMsg("/wek/inputs",*val[0..]) });
 		0.01.wait; // 25 frames per second
     }
 }.fork
