@@ -83,6 +83,7 @@ float[] numbers = {1,2,3,4,5,6,7,8,9,10};
   
   table.addColumn("timestamp");
   table.addColumn("sound");
+  
 }
 
 
@@ -99,6 +100,11 @@ void draw()
     text("Failure 2", 20, 128);
     text("Failure 3", 20, 188);
     text("Failure 4", 20, 248);
+    fill(169,169,169);
+    rect(800, 400, 150, 50); //coords: x: 725 -> 875 and y: 375 -> 425
+    fill(0,0,0);
+    text("Generate CSV", 738, 405);
+
     
     
     rect(520, height/2+1, 800,1);
@@ -359,7 +365,10 @@ void update() {
 }
 
 void mousePressed() {
-  saveTable(table, "data/timestamps.csv");
+  //coords: x: 725 -> 875 and y: 375 -> 425
+  if ((mouseX > 725 && mouseX < 875) && (mouseY > 375 && mouseY < 425)) {
+      saveTable(table, "data/timestamps.csv");
+  }
 }
 
 //SOURCE: https://processing.org/examples/rollover.html
