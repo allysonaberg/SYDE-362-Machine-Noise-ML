@@ -148,7 +148,6 @@ void draw()
     if (decay1 != 0 && (decay2 == 0) && (decay3 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 1")) {
         if (collectedData.size() == 0) {
-          print("SETTING START TIME");
           startTime = millis()/1000.0;
         }
         numbers.add("sound 1");
