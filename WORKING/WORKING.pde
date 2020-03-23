@@ -159,6 +159,10 @@ void draw()
         TableRow newRow = table.addRow();
         newRow.setFloat("timestamp", time);
         newRow.setString("sound", "A");
+        
+        TableRow whiteNoise = table.addRow();
+        whiteNoise.setString("timestamp", "");
+        whiteNoise.setString("sound", "Delay");
       }
     } else if (decay2 != 0 && (decay1 == 0) && (decay3 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 2")) {
@@ -174,6 +178,10 @@ void draw()
         TableRow newRow = table.addRow();
         newRow.setFloat("timestamp", time);
         newRow.setString("sound", "B");
+        
+        TableRow whiteNoise = table.addRow();
+        whiteNoise.setString("timestamp", "");
+        whiteNoise.setString("sound", "Delay");
       }
     } else if (decay3 != 0 && (decay1 == 0) && (decay2 == 0) && (decay4 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 3")) {
@@ -189,6 +197,10 @@ void draw()
         TableRow newRow = table.addRow();
         newRow.setFloat("timestamp", time);
         newRow.setString("sound", "C");
+        
+        TableRow whiteNoise = table.addRow();
+        whiteNoise.setString("timestamp", "");
+        whiteNoise.setString("sound", "Delay");
       }
     } else if (decay4 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 ==0)) {
       if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 4")) {
@@ -204,13 +216,14 @@ void draw()
         TableRow newRow = table.addRow();
         newRow.setFloat("timestamp", time);
         newRow.setString("sound", "D");
+        
+        TableRow whiteNoise = table.addRow();
+        whiteNoise.setString("timestamp", "");
+        whiteNoise.setString("sound", "Delay");
       }
     } else if (decay5 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 == 0) && (decay4 == 0)) {
       //ignore, this indicates white noise
       numbers.add("sound 5");
-      //TableRow newRow = table.addRow();
-      //newRow.setString("timestamp", "");
-      //newRow.setString("sound", "Delay");
     }
     
     for (Iterator<Entry<Float,Integer>> iter = collectedData.entrySet().iterator(); iter.hasNext();)
