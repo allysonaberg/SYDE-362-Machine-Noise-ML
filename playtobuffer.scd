@@ -25,7 +25,7 @@ x = {
 )
 
 (
-c = Bus(\control, 0, 20);
+c = Bus(\control, 0, 13);
 )
 
 // send coefficients
@@ -33,7 +33,7 @@ c = Bus(\control, 0, 20);
 r = {
 
     inf.do {
-		c.getn(20, { |val| ~toWekinator.sendMsg("/wek/inputs",*val[0..]) });
+		c.getn(13, { |val| ~toWekinator.sendMsg("/wek/inputs",*val[0..]) });
 		0.01.wait; // 25 frames per second
     }
 }.fork

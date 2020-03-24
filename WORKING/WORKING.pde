@@ -261,7 +261,7 @@ void draw()
         whiteNoise.setString("timestamp", "");
         whiteNoise.setString("sound", "Delay");
       }
-    } else if (decay5 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 == 0) && (decay4 == 0)) {
+    } else {
       //ignore, this indicates white noise
       numbers.add("sound 5");
     }
