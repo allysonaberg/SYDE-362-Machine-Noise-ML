@@ -7,7 +7,7 @@ s.boot;
 )
 
 // read a soundfile
-d = Buffer.read(s, "/Users/Ally/ControlTest-100-0.wav");
+d = Buffer.read(s, "/Users/Ally/ControlTest-50.wav");
 
 (
 // create a network address and assign it to a global variable
@@ -25,7 +25,7 @@ x = {
 )
 
 (
-c = Bus(\control, 0, 30);
+c = Bus(\control, 0, 20);
 )
 
 // send coefficients
@@ -33,7 +33,7 @@ c = Bus(\control, 0, 30);
 r = {
 
     inf.do {
-		c.getn(30, { |val| ~toWekinator.sendMsg("/wek/inputs",*val[0..]) });
+		c.getn(20, { |val| ~toWekinator.sendMsg("/wek/inputs",*val[0..]) });
 		0.01.wait; // 25 frames per second
     }
 }.fork
