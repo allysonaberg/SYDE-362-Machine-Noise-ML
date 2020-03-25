@@ -319,12 +319,7 @@ void oscEvent(OscMessage theOscMessage) {
         p3 = theOscMessage.get(2).floatValue(); //get third parameter
         p4 = theOscMessage.get(3).floatValue(); //get fourth parameter
         p5 = theOscMessage.get(4).floatValue(); //get fifth parameter
-        
-        nextValue1(p1);
-        nextValue2(p2);
-        nextValue3(p3);
-        nextValue4(p4);
-        nextValue5(p5);
+
         
         //println("Received new params value from Wekinator");  
       } else {
