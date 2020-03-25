@@ -8,38 +8,8 @@ import java.util.Map.Entry;
 OscP5 oscP5;
 NetAddress dest;
 
-//MOVING AVERAGE
-float[] data1 = new float[2];
-float total1 = 0, average1 = 0;
-int m1 = 0, n1 = 0;
-
-float[] data2 = new float[2];
-float total2 = 0, average2 = 0;
-int m2 = 0, n2 = 0;
-
-float[] data3 = new float[2];
-float total3 = 0, average3 = 0;
-int m3 = 0, n3 = 0;
-
-float[] data4 = new float[2];
-float total4 = 0, average4 = 0;
-int m4 = 0, n4 = 0;
-
-float[] data5 = new float[2];
-float total5 = 0, average5 = 0;
-int m5 = 0, n5 = 0;
-
-int decayStart = 200;
-int decayAmount = 10;
-
 float lowLim = 0.2;
 float highLim = 0.8;
-
-int decay1 = 200;
-int decay2 = 200;
-int decay3 = 200;
-int decay4 = 200;
-int decay5 = 200;
 
 float p1 = 0;
 float p2 = 0;
@@ -47,9 +17,8 @@ float p3 = 0;
 float p4 = 0;
 float p5 = 0;
 
-//DOT DATA120
+//DOT DATA
 
-ArrayList<String> numbers = new ArrayList<String>();
 HashMap<Float, Integer> collectedData = new HashMap<Float, Integer>();
 HashMap<Float, Float> timeStampData = new HashMap<Float, Float>();
 
@@ -72,6 +41,7 @@ float totalType4 = 0;
 float totalType5 = 0;
 
 String previous = "";
+
 // CSV
 Table table = new Table();
 
@@ -84,15 +54,6 @@ void setup()
   oscP5 = new OscP5(this,12000); //listen for OSC messages on port 12000 (Wekinator default)
   dest = new NetAddress("127.0.0.1",6448); //send messages back to Wekinator on port 6448, localhost (this machine) (default)
   rectMode(CENTER);
-  
-float[] numbers = {1,2,3,4,5,6,7,8,9,10};
-  for(int i = 0; i < numbers.length; i++){
-    nextValue1(numbers[i]);
-    nextValue2(numbers[i]);
-    nextValue3(numbers[i]);
-    nextValue4(numbers[i]);
-    nextValue5(numbers[i]);
-  }  
   
   table.addColumn("timestamp");
   table.addColumn("sound");
@@ -151,155 +112,6 @@ void draw()
     text("time", 930, height/2 + 6);
     update();
     
-    
-    // ******* WORKING AVERAGE CALCULATIONS ******* //
-    
-  //if((average1 > highLim) && (average2 < lowLim) && (average3 < lowLim)  && (average4 < lowLim) && (average5 < lowLim)) {
-  //  decay1 = decayStart;
-  //  decay2 -= decayAmount;
-  //  decay3 -= decayAmount;
-  //  decay4 -= decayAmount;
-  //  decay5 -= decayAmount;
-    
-  //  //if (previous != "A") {
-  //  //  TableRow newRow = table.addRow();
-  //  //  newRow.setString("sound", "A");
-  //  //  previous = "A";
-  //  //}
-  //} else if((average1 < lowLim) && (average2 > highLim) && (average3 < lowLim) && (average4 < lowLim) && (average5 < lowLim)){
-  //  decay1 -= decayAmount;
-  //  decay2 = decayStart;
-  //  decay3 -= decayAmount;
-  //  decay4 -= decayAmount;
-  //  decay5 -= decayAmount;
-    
-  //  //if (previous != "B") {
-  //  //  TableRow newRow = table.addRow();
-  //  //  newRow.setString("sound", "B");
-  //  //  previous = "B";
-  //  //}
-  //} else if((average1 < lowLim) && (average2 < lowLim) && (average3 > highLim) && (average4 < lowLim) && (average5 < lowLim)){
-  //  decay1 -= decayAmount;
-  //  decay2 -= decayAmount;
-  //  decay3 = decayStart;
-  //  decay4 -= decayAmount;
-  //  decay5 -= decayAmount;
-  //  //if (previous != "C") {
-  //  //  TableRow newRow = table.addRow();
-  //  //  newRow.setString("sound", "C");
-  //  //  previous = "C";
-  //  //}
-  //} else if((average1 < lowLim) && (average2 < lowLim) && (average3 < lowLim) && (average4 > highLim) && (average5 < lowLim)){
-  //  decay1 -= decayAmount;
-  //  decay2 -= decayAmount;
-  //  decay3 -= decayAmount; 
-  //  decay4 = decayStart;
-  //  decay5 -= decayAmount;
-  //  //if (previous != "D") {
-  //  //  TableRow newRow = table.addRow();
-  //  //  newRow.setString("sound", "D");
-  //  //  previous = "D";
-  //  //}
-  //} else {
-  //  decay1 -= decayAmount;
-  //  decay2 -= decayAmount;
-  //  decay3 -= decayAmount; 
-  //  decay4 -= decayAmount;
-  //  decay5 = decayStart;
-  //  //if (previous != "BLANK") {
-  //  //  TableRow newRow = table.addRow();
-  //  //  newRow.setString("sound", "BLANK");
-  //  //  previous = "BLANK";
-  //  //}
-  //}
-  
-  //  if(decay1 < 0){decay1 = 0;}
-  //  if(decay2 < 0){decay2 = 0;}
-  //  if(decay3 < 0){decay3 = 0;}
-  //  if(decay4 < 0){decay4 = 0;}
-  //  if(decay5 < 0){decay5 = 0;}
-    
-    
-  //  // ******* DRAW ELLIPSE *******//
-  //  if (decay1 != 0 && (decay2 == 0) && (decay3 == 0) && (decay4 ==0)) {
-  //    if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 1")) {
-  //      if (collectedData.size() == 0) {
-  //        startTime = millis()/1000.0;
-  //      }
-  //      numbers.add("sound 1");
-  //      Float time = millis()/1000.0 - startTime;
-  //      collectedData.put(time,1);
-  //      totalType1 = totalType1 + 1;
-        
-  //      //TableRow newRow = table.addRow();
-  //      //newRow.setFloat("timestamp", time);
-  //      //newRow.setString("sound", "A");
-        
-  //      //TableRow whiteNoise = table.addRow();
-  //      //whiteNoise.setString("timestamp", "");
-  //      //whiteNoise.setString("sound", "Delay");
-  //    }
-  //  } else if (decay2 != 0 && (decay1 == 0) && (decay3 == 0) && (decay4 ==0)) {
-  //    if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 2")) {
-  //      if (collectedData.size() == 0) {
-  //        print("SETTING START TIME");
-  //        startTime = millis()/1000.0;
-  //      }
-  //      numbers.add("sound 2");
-  //      Float time = millis()/1000.0 - startTime;
-  //      collectedData.put(time,2);
-  //      totalType2 = totalType2 + 1;
-        
-  //      //TableRow newRow = table.addRow();
-  //      //newRow.setFloat("timestamp", time);
-  //      //newRow.setString("sound", "B");
-        
-  //      //TableRow whiteNoise = table.addRow();
-  //      //whiteNoise.setString("timestamp", "");
-  //      //whiteNoise.setString("sound", "Delay");
-  //    }
-  //  } else if (decay3 != 0 && (decay1 == 0) && (decay2 == 0) && (decay4 ==0)) {
-  //    if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 3")) {
-  //      if (collectedData.size() == 0) {
-  //        print("SETTING START TIME");
-  //        startTime = millis()/1000.0;
-  //      }
-  //      numbers.add("sound 3");
-  //      Float time = millis()/1000.0 - startTime;
-  //      collectedData.put(time,3);
-  //      totalType3 = totalType3 + 1;
-        
-  //      //TableRow newRow = table.addRow();
-  //      //newRow.setFloat("timestamp", time);
-  //      //newRow.setString("sound", "C");
-        
-  //      //TableRow whiteNoise = table.addRow();
-  //      //whiteNoise.setString("timestamp", "");
-  //      //whiteNoise.setString("sound", "Delay");
-  //    }
-  //  } else if (decay4 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 ==0)) {
-  //    if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 4")) {
-  //      if (collectedData.size() == 0) {
-  //        print("SETTING START TIME");
-  //        startTime = millis()/1000.0;
-  //      }
-  //      numbers.add("sound 4");
-  //      Float time = millis()/1000.0 - startTime;
-  //      collectedData.put(time,4);
-  //      totalType4 = totalType4 + 1;
-        
-  //      //TableRow newRow = table.addRow();
-  //      //newRow.setFloat("timestamp", time);
-  //      //newRow.setString("sound", "D");
-        
-  //      //TableRow whiteNoise = table.addRow();
-  //      //whiteNoise.setString("timestamp", "");
-  //      //whiteNoise.setString("sound", "Delay");
-  //    }
-  //  } else {
-  //    //ignore, this indicates white noise
-  //    numbers.add("sound 5");
-  //  }
     
     if ((p1 > highLim) && (p2 < lowLim) && (p3 < lowLim) && (p4 < lowLim) && (p5 < lowLim)) {
           if (previous != "A") {        
@@ -519,55 +331,4 @@ void oscEvent(OscMessage theOscMessage) {
         println("Error: unexpected params type tag received by Processing");
       }
  }
-}
-
-
-// moving average1
-public void nextValue1(float value){
-  total1 -= data1[m1];
-  data1[m1] = value;
-  total1 += value;
-  m1 = ++m1 % data1.length;
-  if(n1 < data1.length) n1++;
-  average1 = total1 / n1;
-}
-
-// moving average2
-public void nextValue2(float value){
-  total2 -= data2[m2];
-  data2[m2] = value;
-  total2 += value;
-  m2 = ++m2 % data2.length;
-  if(n2 < data2.length) n2++;
-  average2 = total2 / n2;
-}
-
-// moving average3
-public void nextValue3(float value){
-  total3 -= data3[m3];
-  data3[m3] = value;
-  total3 += value;
-  m3 = ++m3 % data3.length;
-  if(n3 < data3.length) n3++;
-  average3 = total3 / n3;
-}
-
-// moving average4
-public void nextValue4(float value){
-  total4 -= data4[m4];
-  data4[m4] = value;
-  total4 += value;
-  m4 = ++m4 % data4.length;
-  if(n4 < data4.length) n4++;
-  average4 = total4 / n4;
-}
-
-// moving average5
-public void nextValue5(float value){
-  total5 -= data5[m5];
-  data5[m5] = value;
-  total5 += value;
-  m5 = ++m5 % data5.length;
-  if(n5 < data5.length) n5++;
-  average5 = total5 / n5;
 }
