@@ -7,7 +7,7 @@ s.boot;
 )
 
 // read a soundfile
-d = Buffer.read(s, "/Users/Ally/A.wav");
+d = Buffer.read(s, "/Users/Ally/ControlTest-10.wav");
 
 (
 // create a network address and assign it to a global variable
@@ -16,10 +16,11 @@ d = Buffer.read(s, "/Users/Ally/A.wav");
 
 (
 x = {
-    var in, fft, array;
-	in = PlayBuf.ar(1, d, BufRateScale.kr(d), loop: 0);
-    fft = FFT(LocalBuf(1024), in);  // for sampling rates 44100 and 48000
-    array = MFCC.kr(fft, 7);
+    var in, fft, array, filter;
+	in = PlayBuf.ar(1, d, BufRateScale.kr(d), loop: 1);
+	filter = HPF.ar(in: in, freq: 200.0, mul: 1.0, add: 0.0);
+    fft = FFT(LocalBuf(1024), filter);  // for sampling rates 44100 and 48000
+    array = MFCC.kr(fft, 20);
 	Out.kr(0, array); // control bus out
 }.play;
 )
