@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <OSCInputGroup>
   <oscMessage>/wek/inputs</oscMessage>
-  <numInputs>20</numInputs>
+  <numInputs>13</numInputs>
   <groupName>Inputs</groupName>
   <inputNames>
     <string>inputs-1</string>
@@ -17,12 +17,5 @@
     <string>inputs-11</string>
     <string>inputs-12</string>
     <string>inputs-13</string>
-    <string>inputs-14</string>
-    <string>inputs-15</string>
-    <string>inputs-16</string>
-    <string>inputs-17</string>
-    <string>inputs-18</string>
-    <string>inputs-19</string>
-    <string>inputs-20</string>
   </inputNames>
 </OSCInputGroup>
