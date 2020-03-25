@@ -41,7 +41,14 @@ int decay3 = 200;
 int decay4 = 200;
 int decay5 = 200;
 
-//DOT DATA
+float p1 = 0;
+float p2 = 0;
+float p3 = 0;
+float p4 = 0;
+float p5 = 0;
+
+//DOT DATA120
+
 ArrayList<String> numbers = new ArrayList<String>();
 HashMap<Float, Integer> collectedData = new HashMap<Float, Integer>();
 HashMap<Float, Float> timeStampData = new HashMap<Float, Float>();
@@ -64,12 +71,13 @@ float totalType3 = 0;
 float totalType4 = 0;
 float totalType5 = 0;
 
-
+String previous = "";
 // CSV
 Table table = new Table();
 
 void setup()
 {
+  frameRate(100);
   size(1000, 550);
   
   //Initialize OSC communication
@@ -146,126 +154,221 @@ void draw()
     
     // ******* WORKING AVERAGE CALCULATIONS ******* //
     
-    if((average1 > highLim) && (average2 < lowLim) && (average3 < lowLim)  && (average4 < lowLim) && (average5 < lowLim)) {
-      decay1 = decayStart;
-      decay2 -= decayAmount;
-      decay3 -= decayAmount;
-      decay4 -= decayAmount;
-      decay5 -= decayAmount;
-    } else if((average1 < lowLim) && (average2 > highLim) && (average3 < lowLim) && (average4 < lowLim) && (average5 < lowLim)){
-      decay1 -= decayAmount;
-      decay2 = decayStart;
-      decay3 -= decayAmount;
-      decay4 -= decayAmount;
-      decay5 -= decayAmount;
-    } else if((average1 < lowLim) && (average2 < lowLim) && (average3 > highLim) && (average4 < lowLim) && (average5 < lowLim)){
-      decay1 -= decayAmount;
-      decay2 -= decayAmount;
-      decay3 = decayStart;
-      decay4 -= decayAmount;
-      decay5 -= decayAmount;
-    } else if((average1 < lowLim) && (average2 < lowLim) && (average3 < lowLim) && (average4 > highLim) && (average5 < lowLim)){
-      decay1 -= decayAmount;
-      decay2 -= decayAmount;
-      decay3 -= decayAmount; 
-      decay4 = decayStart;
-      decay5 -= decayAmount;
-    } else if((average1 < lowLim) && (average2 < lowLim) && (average3 < lowLim) && (average4 < lowLim) && (average5 > highLim)){
-      decay1 -= decayAmount;
-      decay2 -= decayAmount;
-      decay3 -= decayAmount; 
-      decay4 -= decayAmount;
-      decay5 = decayStart;
-    }
+  //if((average1 > highLim) && (average2 < lowLim) && (average3 < lowLim)  && (average4 < lowLim) && (average5 < lowLim)) {
+  //  decay1 = decayStart;
+  //  decay2 -= decayAmount;
+  //  decay3 -= decayAmount;
+  //  decay4 -= decayAmount;
+  //  decay5 -= decayAmount;
+    
+  //  //if (previous != "A") {
+  //  //  TableRow newRow = table.addRow();
+  //  //  newRow.setString("sound", "A");
+  //  //  previous = "A";
+  //  //}
+  //} else if((average1 < lowLim) && (average2 > highLim) && (average3 < lowLim) && (average4 < lowLim) && (average5 < lowLim)){
+  //  decay1 -= decayAmount;
+  //  decay2 = decayStart;
+  //  decay3 -= decayAmount;
+  //  decay4 -= decayAmount;
+  //  decay5 -= decayAmount;
+    
+  //  //if (previous != "B") {
+  //  //  TableRow newRow = table.addRow();
+  //  //  newRow.setString("sound", "B");
+  //  //  previous = "B";
+  //  //}
+  //} else if((average1 < lowLim) && (average2 < lowLim) && (average3 > highLim) && (average4 < lowLim) && (average5 < lowLim)){
+  //  decay1 -= decayAmount;
+  //  decay2 -= decayAmount;
+  //  decay3 = decayStart;
+  //  decay4 -= decayAmount;
+  //  decay5 -= decayAmount;
+  //  //if (previous != "C") {
+  //  //  TableRow newRow = table.addRow();
+  //  //  newRow.setString("sound", "C");
+  //  //  previous = "C";
+  //  //}
+  //} else if((average1 < lowLim) && (average2 < lowLim) && (average3 < lowLim) && (average4 > highLim) && (average5 < lowLim)){
+  //  decay1 -= decayAmount;
+  //  decay2 -= decayAmount;
+  //  decay3 -= decayAmount; 
+  //  decay4 = decayStart;
+  //  decay5 -= decayAmount;
+  //  //if (previous != "D") {
+  //  //  TableRow newRow = table.addRow();
+  //  //  newRow.setString("sound", "D");
+  //  //  previous = "D";
+  //  //}
+  //} else {
+  //  decay1 -= decayAmount;
+  //  decay2 -= decayAmount;
+  //  decay3 -= decayAmount; 
+  //  decay4 -= decayAmount;
+  //  decay5 = decayStart;
+  //  //if (previous != "BLANK") {
+  //  //  TableRow newRow = table.addRow();
+  //  //  newRow.setString("sound", "BLANK");
+  //  //  previous = "BLANK";
+  //  //}
+  //}
   
-    if(decay1 < 0){decay1 = 0;}
-    if(decay2 < 0){decay2 = 0;}
-    if(decay3 < 0){decay3 = 0;}
-    if(decay4 < 0){decay4 = 0;}
-    if(decay5 < 0){decay5 = 0;}
+  //  if(decay1 < 0){decay1 = 0;}
+  //  if(decay2 < 0){decay2 = 0;}
+  //  if(decay3 < 0){decay3 = 0;}
+  //  if(decay4 < 0){decay4 = 0;}
+  //  if(decay5 < 0){decay5 = 0;}
     
     
-    // ******* DRAW ELLIPSE *******//
-    if (decay1 != 0 && (decay2 == 0) && (decay3 == 0) && (decay4 ==0)) {
-      if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 1")) {
-        if (collectedData.size() == 0) {
-          startTime = millis()/1000.0;
-        }
-        numbers.add("sound 1");
-        Float time = millis()/1000.0 - startTime;
-        collectedData.put(time,1);
-        totalType1 = totalType1 + 1;
+  //  // ******* DRAW ELLIPSE *******//
+  //  if (decay1 != 0 && (decay2 == 0) && (decay3 == 0) && (decay4 ==0)) {
+  //    if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 1")) {
+  //      if (collectedData.size() == 0) {
+  //        startTime = millis()/1000.0;
+  //      }
+  //      numbers.add("sound 1");
+  //      Float time = millis()/1000.0 - startTime;
+  //      collectedData.put(time,1);
+  //      totalType1 = totalType1 + 1;
         
-        TableRow newRow = table.addRow();
-        newRow.setFloat("timestamp", time);
-        newRow.setString("sound", "A");
+  //      //TableRow newRow = table.addRow();
+  //      //newRow.setFloat("timestamp", time);
+  //      //newRow.setString("sound", "A");
         
-        TableRow whiteNoise = table.addRow();
-        whiteNoise.setString("timestamp", "");
-        whiteNoise.setString("sound", "Delay");
-      }
-    } else if (decay2 != 0 && (decay1 == 0) && (decay3 == 0) && (decay4 ==0)) {
-      if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 2")) {
-        if (collectedData.size() == 0) {
-          print("SETTING START TIME");
-          startTime = millis()/1000.0;
-        }
-        numbers.add("sound 2");
-        Float time = millis()/1000.0 - startTime;
-        collectedData.put(time,2);
-        totalType2 = totalType2 + 1;
+  //      //TableRow whiteNoise = table.addRow();
+  //      //whiteNoise.setString("timestamp", "");
+  //      //whiteNoise.setString("sound", "Delay");
+  //    }
+  //  } else if (decay2 != 0 && (decay1 == 0) && (decay3 == 0) && (decay4 ==0)) {
+  //    if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 2")) {
+  //      if (collectedData.size() == 0) {
+  //        print("SETTING START TIME");
+  //        startTime = millis()/1000.0;
+  //      }
+  //      numbers.add("sound 2");
+  //      Float time = millis()/1000.0 - startTime;
+  //      collectedData.put(time,2);
+  //      totalType2 = totalType2 + 1;
         
-        TableRow newRow = table.addRow();
-        newRow.setFloat("timestamp", time);
-        newRow.setString("sound", "B");
+  //      //TableRow newRow = table.addRow();
+  //      //newRow.setFloat("timestamp", time);
+  //      //newRow.setString("sound", "B");
         
-        TableRow whiteNoise = table.addRow();
-        whiteNoise.setString("timestamp", "");
-        whiteNoise.setString("sound", "Delay");
-      }
-    } else if (decay3 != 0 && (decay1 == 0) && (decay2 == 0) && (decay4 ==0)) {
-      if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 3")) {
-        if (collectedData.size() == 0) {
-          print("SETTING START TIME");
-          startTime = millis()/1000.0;
-        }
-        numbers.add("sound 3");
-        Float time = millis()/1000.0 - startTime;
-        collectedData.put(time,3);
-        totalType3 = totalType3 + 1;
+  //      //TableRow whiteNoise = table.addRow();
+  //      //whiteNoise.setString("timestamp", "");
+  //      //whiteNoise.setString("sound", "Delay");
+  //    }
+  //  } else if (decay3 != 0 && (decay1 == 0) && (decay2 == 0) && (decay4 ==0)) {
+  //    if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 3")) {
+  //      if (collectedData.size() == 0) {
+  //        print("SETTING START TIME");
+  //        startTime = millis()/1000.0;
+  //      }
+  //      numbers.add("sound 3");
+  //      Float time = millis()/1000.0 - startTime;
+  //      collectedData.put(time,3);
+  //      totalType3 = totalType3 + 1;
         
-        TableRow newRow = table.addRow();
-        newRow.setFloat("timestamp", time);
-        newRow.setString("sound", "C");
+  //      //TableRow newRow = table.addRow();
+  //      //newRow.setFloat("timestamp", time);
+  //      //newRow.setString("sound", "C");
         
-        TableRow whiteNoise = table.addRow();
-        whiteNoise.setString("timestamp", "");
-        whiteNoise.setString("sound", "Delay");
-      }
-    } else if (decay4 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 ==0)) {
-      if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 4")) {
-        if (collectedData.size() == 0) {
-          print("SETTING START TIME");
-          startTime = millis()/1000.0;
-        }
-        numbers.add("sound 4");
-        Float time = millis()/1000.0 - startTime;
-        collectedData.put(time,4);
-        totalType4 = totalType4 + 1;
+  //      //TableRow whiteNoise = table.addRow();
+  //      //whiteNoise.setString("timestamp", "");
+  //      //whiteNoise.setString("sound", "Delay");
+  //    }
+  //  } else if (decay4 != 0 && (decay1 == 0) && (decay2 == 0) && (decay3 ==0)) {
+  //    if (numbers.size() == 0 || (numbers.get(numbers.size() - 1) != "sound 4")) {
+  //      if (collectedData.size() == 0) {
+  //        print("SETTING START TIME");
+  //        startTime = millis()/1000.0;
+  //      }
+  //      numbers.add("sound 4");
+  //      Float time = millis()/1000.0 - startTime;
+  //      collectedData.put(time,4);
+  //      totalType4 = totalType4 + 1;
         
-        TableRow newRow = table.addRow();
-        newRow.setFloat("timestamp", time);
-        newRow.setString("sound", "D");
+  //      //TableRow newRow = table.addRow();
+  //      //newRow.setFloat("timestamp", time);
+  //      //newRow.setString("sound", "D");
         
-        TableRow whiteNoise = table.addRow();
-        whiteNoise.setString("timestamp", "");
-        whiteNoise.setString("sound", "Delay");
-      }
-    } else {
-      //ignore, this indicates white noise
-      numbers.add("sound 5");
-    }
+  //      //TableRow whiteNoise = table.addRow();
+  //      //whiteNoise.setString("timestamp", "");
+  //      //whiteNoise.setString("sound", "Delay");
+  //    }
+  //  } else {
+  //    //ignore, this indicates white noise
+  //    numbers.add("sound 5");
+  //  }
     
+    if ((p1 > highLim) && (p2 < lowLim) && (p3 < lowLim) && (p4 < lowLim) && (p5 < lowLim)) {
+          if (previous != "A") {        
+            if (collectedData.size() == 0) {
+            startTime = millis()/1000.0;
+            }
+            
+            Float time = millis()/1000.0 - startTime;
+            collectedData.put(time,1);
+            totalType1 = totalType1 + 1;
+            
+            TableRow newRow = table.addRow();
+            newRow.setString("sound", "A");
+            newRow.setFloat("timestamp", time);
+            previous = "A";
+          }
+        } else if ((p1 < lowLim) && (p2 > highLim) && (p3 < lowLim) && (p4 < lowLim) && (p5 < lowLim)) {
+          if (previous != "B") {
+            if (collectedData.size() == 0) {
+            startTime = millis()/1000.0;
+            }
+            
+            Float time = millis()/1000.0 - startTime;
+            collectedData.put(time,2);
+            totalType2 = totalType2 + 1;
+            
+            TableRow newRow = table.addRow();
+            newRow.setString("sound", "B");
+            newRow.setFloat("timestamp", time);
+            previous = "B";
+          }
+        } else if ((p1 < lowLim) && (p2 < lowLim) && (p3 > highLim) && (p4 < lowLim) && (p5 < lowLim)) {
+          if (previous != "C") {
+            if (collectedData.size() == 0) {
+            startTime = millis()/1000.0;
+            }
+            
+            Float time = millis()/1000.0 - startTime;
+            collectedData.put(time,3);
+            totalType3 = totalType3 + 1;
+            
+            TableRow newRow = table.addRow();
+            newRow.setString("sound", "C");
+            newRow.setFloat("timestamp", time);
+            previous = "C";
+          }
+        } else if ((p1 < lowLim) && (p2 < lowLim) && (p3 < lowLim) && (p4 > highLim) && (p5 < lowLim)) {
+          if (previous != "D") {
+            if (collectedData.size() == 0) {
+            startTime = millis()/1000.0;
+            }
+            
+            Float time = millis()/1000.0 - startTime;
+            collectedData.put(time,4);
+            totalType4 = totalType4 + 1;
+            
+            TableRow newRow = table.addRow();
+            newRow.setString("sound", "D");
+            newRow.setFloat("timestamp", time);
+            previous = "D";
+          }
+        } else if ((p1 < lowLim) && (p2 < lowLim) && (p3 < lowLim) && (p4 < lowLim) && (p5 > highLim)) {
+         if (previous != "-") {
+            TableRow newRow = table.addRow();
+            newRow.setString("sound", "-");
+            previous = "-";
+          } 
+        }
+        
     for (Iterator<Entry<Float,Integer>> iter = collectedData.entrySet().iterator(); iter.hasNext();)
     {
       Entry<Float,Integer> timeStamp = iter.next();
@@ -399,11 +502,11 @@ boolean overPoint(float x, float y, float bound) {
 void oscEvent(OscMessage theOscMessage) {
  if (theOscMessage.checkAddrPattern("/wek/outputs")==true) {
      if(theOscMessage.checkTypetag("ffffff")) { //Now looking for parameters (6 being sent)
-        float p1 = theOscMessage.get(0).floatValue(); //get first parameter
-        float p2 = theOscMessage.get(1).floatValue(); //get second parameter
-        float p3 = theOscMessage.get(2).floatValue(); //get third parameter
-        float p4 = theOscMessage.get(3).floatValue(); //get fourth parameter
-        float p5 = theOscMessage.get(4).floatValue(); //get fifth parameter
+        p1 = theOscMessage.get(0).floatValue(); //get first parameter
+        p2 = theOscMessage.get(1).floatValue(); //get second parameter
+        p3 = theOscMessage.get(2).floatValue(); //get third parameter
+        p4 = theOscMessage.get(3).floatValue(); //get fourth parameter
+        p5 = theOscMessage.get(4).floatValue(); //get fifth parameter
         
         nextValue1(p1);
         nextValue2(p2);
